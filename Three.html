@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Three.js Line Example</title>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.min.js"></script>
+</head>
+<body>
+  <script>
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+    const renderer = new THREE.WebGLRenderer({ antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    document.body.appendChild(renderer.domElement);
+
+    const hexagonRadius = 2;
+    const points = [];
+    //points.push(new THREE.Vector3(-1, 0, 0)); // Start point
+    //points.push(new THREE.Vector3(0, 0, 0));  // Mid point (horizontal line)
+    //points.push(new THREE.Vector3(0, 2, 0));  // End point (vertical line)
+
+      //points.push(new THREE.Vector3(-1, 2, 0)); // Top left of "7"
+      //points.push(new THREE.Vector3(1, 2, 0));  // Top right of "7"
+      //points.push(new THREE.Vector3(1, 0, 0));  // Bottom right of "7"
+
+
+      points.push(new THREE.Vector3(-1, 1, 0)); 
+    points.push(new THREE.Vector3(1, 1, 0)); 
+    points.push(new THREE.Vector3(1.5, 0, 0));
+    points.push(new THREE.Vector3(0, -2, 0));
+    points.push(new THREE.Vector3(-1.5, 0, 0));
+    points.push(new THREE.Vector3(-1, 1,0));
+     /*for (let i = 0; i <= 6; i++) { // 6 points + 1 to close the hexagon
+      const angle = (i * Math.PI) / 3; // Divide circle into 6 parts
+      const x = hexagonRadius * Math.cos(angle);
+      const y = hexagonRadius * Math.sin(angle);  // hexagon shape 
+      points.push(new THREE.Vector3(x, y, 0));
+    }*/
+
+    /*const outerRadius = 2; // Outer radius of the star
+    const innerRadius = 1; // Inner radius of the star
+    const numPoints = 5;   // Number of points in the star
+
+    for (let i = 0; i <= numPoints * 2; i++) {
+      const angle = (i * Math.PI) / numPoints; // Calculate angle
+      const radius = i % 2 === 0 ? outerRadius : innerRadius; // Alternate between outer and inner radii
+      const x = radius * Math.cos(angle);
+      const y = radius * Math.sin(angle);
+      points.push(new THREE.Vector3(x, y, 0)); // Add point
+    }*/
+
+    const geometry = new THREE.BufferGeometry().setFromPoints(points);
+    const material = new THREE.LineBasicMaterial({ color: 0xff00ff });
+    const line = new THREE.Line(geometry, material);
+    scene.add(line);
+    camera.position.z = 5;
+    function animate() {
+      requestAnimationFrame(animate);
+      line.rotation.y += 0.01;
+      renderer.render(scene, camera);
+    }
+
+    animate();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  </script>
+</body>
+</html>
